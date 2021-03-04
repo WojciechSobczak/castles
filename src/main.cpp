@@ -8,6 +8,8 @@
 #include <chrono>
 #include <thread>
 
+#include <spdlog/spdlog.h>
+
 #include "assets_loader.hpp"
 
 int main(int /*argc*/, char* /*argv*/[]) {
@@ -15,14 +17,15 @@ int main(int /*argc*/, char* /*argv*/[]) {
     sdlwrap::SDLTTFLifetimeGuard sdlTtfGuard;
     sdlwrap::SDLWindow window("Castles");
     sdlwrap::SDLRenderer renderer(window);
+    spdlog::set_level(spdlog::level::debug);
 
 
     [&renderer]{
         SDL_Event e;
 
         AssetsLoader loader;
-        auto surface = loader.loadImage("tilable-IMG_0044-grey.png");
-        auto texture = renderer.createTexture(surface);
+        auto texture = loader.loadTexture("tilable-IMG_0044-grey.png", renderer);
+        float scale = 1;
         while (true) {
             auto beforeRenderTime = std::chrono::high_resolution_clock::now();
             renderer.clear();
@@ -30,9 +33,20 @@ int main(int /*argc*/, char* /*argv*/[]) {
                 if (e.type == SDL_QUIT) {
                     return;
                 }
+                if (e.type == SDL_MOUSEWHEEL ) {
+                    if (e.wheel.y > 0) {
+                        scale += 0.1;
+                    } else {
+                        scale -= 0.1;
+                    }
+                    spdlog::debug("Render scale: {}", scale);
+                    renderer.setRenderScale(scale);
+                }
             }
             {
-                renderer.drawTexture(texture, 0, 0);
+                for (size_t i = 0; i < 50; i++) {
+                    renderer.drawTexture(texture, texture.getWidth() * i, 0);
+                }
                 renderer.present();
             }
 

@@ -19,7 +19,7 @@ namespace sdlwrap {
         SDLLifetimeGuard() {
             SDL_Init(SDL_INIT_VIDEO);
         }
-        ~SDLLifetimeGuard() {
+        ~SDLLifetimeGuard() noexcept {
             SDL_Quit();
         }
     };
@@ -29,48 +29,9 @@ namespace sdlwrap {
         SDLTTFLifetimeGuard() {
             TTF_Init();
         }
-        ~SDLTTFLifetimeGuard() {
+        ~SDLTTFLifetimeGuard() noexcept {
             TTF_Quit();
         }
-    };
-
-    class SDLSurface {
-    private:
-        SDL_Surface* surface{};
-    public:
-        SDLSurface(SDL_Surface* surface) : surface(surface) {}
-        SDLSurface(SDLSurface&& other) {
-            this->surface = other.surface;
-            other.surface = nullptr;
-        }
-        ~SDLSurface() {
-            SDL_FreeSurface(this->surface);
-        }
-
-        SDL_Surface* get() const noexcept {
-            return this->surface;
-        }
-
-    };
-
-
-    class SDLTexture {
-    private:
-        SDL_Texture* texture{};
-    public:
-        SDLTexture(SDL_Texture* texture) : texture(texture) {}
-        SDLTexture(SDLTexture&& other) {
-            this->texture = other.texture;
-            other.texture = nullptr;
-        }
-        ~SDLTexture() {
-            SDL_DestroyTexture(this->texture);
-        }
-
-        SDL_Texture* get() const noexcept {
-            return this->texture;
-        }
-
     };
 
     class SDLTTFFont {
@@ -84,11 +45,11 @@ namespace sdlwrap {
                 throw SDLException("TTF_OpenFont() failed");
             }
         }
-        SDLTTFFont(SDLTTFFont&& other) {
+        SDLTTFFont(SDLTTFFont&& other) noexcept {
             this->font = other.font;
             other.font = nullptr;
         }
-        ~SDLTTFFont() {
+        ~SDLTTFFont() noexcept {
             TTF_CloseFont(this->font);
         }
 

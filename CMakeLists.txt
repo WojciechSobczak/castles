@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME}
     "src/sdlwrap/sdlsmallguards.hpp"
     "src/sdlwrap/sdlrenderer.cpp"
     "src/sdlwrap/sdl_include.hpp" "src/assets_loader.hpp" "src/assets_loader.cpp"
-)
+ "src/game/game_map.hpp" "src/game/tile.hpp" "src/game/game_map.cpp" "src/sdlwrap/sdltexture.hpp" "src/sdlwrap/sdltexture.cpp" "src/sdlwrap/sdlwindow.cpp" "src/sdlwrap/sdlsurface.hpp" "src/sdlwrap/sdlsurface.cpp")
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")

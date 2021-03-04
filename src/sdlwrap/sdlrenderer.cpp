@@ -20,6 +20,17 @@ namespace sdlwrap {
         }
     }
 
+    void SDLRenderer::setRenderScale(float xScale, float yScale) {
+        int result = SDL_RenderSetScale(this->renderer, xScale, yScale);
+        if (result == -1) {
+            throw SDLException("SDL_RenderSetScale() failed");
+        }
+    }
+
+    void SDLRenderer::setRenderScale(float scale) {
+        this->setRenderScale(scale, scale);
+    }
+
     void SDLRenderer::clear() {
         setRenderColor({ .r = 0, .g = 0, .b = 0, .a = 0 });
         int result = SDL_RenderClear(this->renderer);
@@ -32,7 +43,7 @@ namespace sdlwrap {
         SDL_RenderPresent(this->renderer);
     }
 
-    void SDLRenderer::drawSquare(uint32_t x, uint32_t y, uint32_t size) {
+    void SDLRenderer::drawFilledSquare(uint32_t x, uint32_t y, uint32_t size) {
         SDL_Rect rect{
             .x = static_cast<int>(x),
             .y = static_cast<int>(y),
@@ -41,12 +52,25 @@ namespace sdlwrap {
         };
         int result = SDL_RenderFillRect(this->renderer, &rect);
         if (result == -1) {
+            throw SDLException("SDL_RenderFillRect() failed");
+        }
+    }
+
+    void SDLRenderer::drawEmptySquare(uint32_t x, uint32_t y, uint32_t size) {
+        SDL_Rect rect{
+            .x = static_cast<int>(x),
+            .y = static_cast<int>(y),
+            .w = static_cast<int>(size),
+            .h = static_cast<int>(size)
+        };
+        int result = SDL_RenderDrawRect(this->renderer, &rect);
+        if (result == -1) {
             throw SDLException("SDL_RenderDrawRect() failed");
         }
     }
 
     SDLTexture SDLRenderer::createTexture(const SDLSurface& surface) {
-        SDLTexture texture = SDL_CreateTextureFromSurface(this->renderer, surface.get());
+        SDLTexture texture{ SDL_CreateTextureFromSurface(this->renderer, surface.get()) };
         if (texture.get() == nullptr) {
             throw SDLException("SDL_CreateTextureFromSurface() failed");
         }
@@ -57,8 +81,8 @@ namespace sdlwrap {
         SDL_Rect rect{
             .x = static_cast<int>(x),
             .y = static_cast<int>(y),
-            .w = static_cast<int>(50),
-            .h = static_cast<int>(50)
+            .w = static_cast<int>(texture.getWidth()),
+            .h = static_cast<int>(texture.getHeight())
         };
         int result = SDL_RenderCopy(this->renderer, texture.get(), nullptr, &rect);
         if (result != 0) {

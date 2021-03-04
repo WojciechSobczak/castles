@@ -18,3 +18,9 @@ sdlwrap::SDLSurface AssetsLoader::loadImage(const std::string& imagePath) {
     }
     return surface;
 }
+
+
+sdlwrap::SDLTexture AssetsLoader::loadTexture(const std::string& path, sdlwrap::SDLRenderer& renderer) {
+    sdlwrap::SDLSurface surface = this->loadImage(path);
+    return renderer.createTexture(surface);
+}
