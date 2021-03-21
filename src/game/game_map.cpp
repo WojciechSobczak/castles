@@ -12,3 +12,7 @@ void GameMap::generateTiles() {
 
 void GameMap::clearTiles() {
 }
+
+std::vector<Tile>& GameMap::operator[](uint32_t row) {
+    return this->tiles[row];
+}

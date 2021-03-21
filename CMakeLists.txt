@@ -33,13 +33,22 @@ endif()
 
 add_executable(${PROJECT_NAME} 
     "src/main.cpp"  
+
+    #SDL Wrapper    
     "src/sdlwrap/sdlwrap.hpp" 
-    "src/sdlwrap/sdlrenderer.hpp"  
-    "src/sdlwrap/sdlwindow.hpp"
     "src/sdlwrap/sdlsmallguards.hpp"
-    "src/sdlwrap/sdlrenderer.cpp"
-    "src/sdlwrap/sdl_include.hpp" "src/assets_loader.hpp" "src/assets_loader.cpp"
- "src/game/game_map.hpp" "src/game/tile.hpp" "src/game/game_map.cpp" "src/sdlwrap/sdltexture.hpp" "src/sdlwrap/sdltexture.cpp" "src/sdlwrap/sdlwindow.cpp" "src/sdlwrap/sdlsurface.hpp" "src/sdlwrap/sdlsurface.cpp")
+    "src/sdlwrap/sdl_include.hpp" 
+    "src/sdlwrap/sdlrenderer.hpp" "src/sdlwrap/sdlrenderer.cpp"
+    "src/sdlwrap/sdlwindow.hpp" "src/sdlwrap/sdlwindow.cpp" 
+    "src/sdlwrap/sdltexture.hpp" "src/sdlwrap/sdltexture.cpp" 
+    "src/sdlwrap/sdlsurface.hpp" "src/sdlwrap/sdlsurface.cpp"
+    
+    #Game
+    "src/assets_loader.hpp" "src/assets_loader.cpp"
+    "src/game/game_map.hpp" "src/game/game_map.cpp"
+    "src/game/tile.hpp"  
+    "src/game/units.hpp"
+)
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")

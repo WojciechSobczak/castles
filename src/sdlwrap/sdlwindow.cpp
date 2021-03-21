@@ -25,6 +25,8 @@ namespace sdlwrap {
         if (this->window == nullptr) {
             throw SDLException("SDL_CreateWindow() failed");
         }
+
+        SDL_SetWindowResizable(this->window, SDL_bool(true));
     }
 
     SDLWindow::~SDLWindow() {

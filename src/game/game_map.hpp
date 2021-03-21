@@ -17,7 +17,6 @@ public:
     void generateTiles();
     void clearTiles();
 
-
-
+    std::vector<Tile>& operator[](uint32_t row);
 
 };

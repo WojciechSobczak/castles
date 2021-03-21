@@ -43,12 +43,19 @@ namespace sdlwrap {
         SDL_RenderPresent(this->renderer);
     }
 
-    void SDLRenderer::drawFilledSquare(uint32_t x, uint32_t y, uint32_t size) {
+    void SDLRenderer::enableDrawBlendMode() {
+        int result = SDL_SetRenderDrawBlendMode(this->renderer, SDL_BLENDMODE_BLEND);
+        if (result == -1) {
+            throw SDLException("SDL_SetRenderDrawBlendMode() failed");
+        }
+    }
+
+    void SDLRenderer::drawFilledRectangle(int32_t x, int32_t y, uint32_t width, uint32_t height) {
         SDL_Rect rect{
-            .x = static_cast<int>(x),
-            .y = static_cast<int>(y),
-            .w = static_cast<int>(size),
-            .h = static_cast<int>(size)
+            .x = x,
+            .y = y,
+            .w = static_cast<int>(width),
+            .h = static_cast<int>(height)
         };
         int result = SDL_RenderFillRect(this->renderer, &rect);
         if (result == -1) {
@@ -56,17 +63,25 @@ namespace sdlwrap {
         }
     }
 
-    void SDLRenderer::drawEmptySquare(uint32_t x, uint32_t y, uint32_t size) {
+    void SDLRenderer::drawEmptyRectangle(int32_t x, int32_t y, uint32_t width, uint32_t height) {
         SDL_Rect rect{
-            .x = static_cast<int>(x),
-            .y = static_cast<int>(y),
-            .w = static_cast<int>(size),
-            .h = static_cast<int>(size)
+            .x = x,
+            .y = y,
+            .w = static_cast<int>(width),
+            .h = static_cast<int>(height)
         };
         int result = SDL_RenderDrawRect(this->renderer, &rect);
         if (result == -1) {
             throw SDLException("SDL_RenderDrawRect() failed");
         }
+    }
+
+    void SDLRenderer::drawFilledSquare(int32_t x, int32_t y, uint32_t size) {
+        this->drawFilledRectangle(x, y, size, size);
+    }
+
+    void SDLRenderer::drawEmptySquare(int32_t x, int32_t y, uint32_t size) {
+        this->drawEmptyRectangle(x, y, size, size);
     }
 
     SDLTexture SDLRenderer::createTexture(const SDLSurface& surface) {
@@ -77,17 +92,24 @@ namespace sdlwrap {
         return texture;
     }
 
-    void SDLRenderer::drawTexture(const SDLTexture& texture, uint32_t x, uint32_t y) {
+    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y, uint32_t width, uint32_t height) {
         SDL_Rect rect{
-            .x = static_cast<int>(x),
-            .y = static_cast<int>(y),
-            .w = static_cast<int>(texture.getWidth()),
-            .h = static_cast<int>(texture.getHeight())
+            .x = x,
+            .y = y,
+            .w = static_cast<int>(width),
+            .h = static_cast<int>(height)
         };
         int result = SDL_RenderCopy(this->renderer, texture.get(), nullptr, &rect);
         if (result != 0) {
             throw SDLException("SDL_RenderCopy() failed");
         }
+    }
+
+    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y) {
+        this->drawTexture(texture, x, y, texture.getWidth(), texture.getHeight());
+    }
+    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y, float xScale, float yScale) {
+        this->drawTexture(texture, x, y, static_cast<uint32_t>(texture.getWidth() * xScale), static_cast<uint32_t>(texture.getHeight() * yScale));
     }
 
     SDL_Renderer* SDLRenderer::get() const noexcept {
