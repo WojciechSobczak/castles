@@ -1,7 +1,7 @@
 #pragma once
-#include "sdlwrap/sdlwrap.hpp"
+#include "sdlwrap.hpp"
 
-class AssetsLoader {
+class SDLAssetsLoader {
 
 public:
     sdlwrap::SDLSurface loadImage(const std::string& path);

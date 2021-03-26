@@ -105,6 +105,13 @@ namespace sdlwrap {
         }
     }
 
+    void SDLRenderer::drawLines(const std::span<SDL_Point> points) {
+        int result = SDL_RenderDrawLines(this->renderer, points.data(), points.size());
+        if (result != 0) {
+            throw SDLException("SDL_RenderCopy() failed");
+        }
+    }
+
     void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y) {
         this->drawTexture(texture, x, y, texture.getWidth(), texture.getHeight());
     }

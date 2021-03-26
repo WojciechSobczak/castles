@@ -1,7 +1,7 @@
-#include "assets_loader.hpp"
+#include "sdl_assets_loader.hpp"
 #include <filesystem>
 
-sdlwrap::SDLSurface AssetsLoader::loadImage(const std::string& imagePath) {
+sdlwrap::SDLSurface SDLAssetsLoader::loadImage(const std::string& imagePath) {
     #ifdef ASSETS_PREFIX
     auto path = std::string(ASSETS_PREFIX) + imagePath;
     #else
@@ -20,7 +20,7 @@ sdlwrap::SDLSurface AssetsLoader::loadImage(const std::string& imagePath) {
 }
 
 
-sdlwrap::SDLTexture AssetsLoader::loadTexture(const std::string& path, sdlwrap::SDLRenderer& renderer) {
+sdlwrap::SDLTexture SDLAssetsLoader::loadTexture(const std::string& path, sdlwrap::SDLRenderer& renderer) {
     sdlwrap::SDLSurface surface = this->loadImage(path);
     return renderer.createTexture(surface);
 }

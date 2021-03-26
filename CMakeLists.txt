@@ -34,20 +34,22 @@ endif()
 add_executable(${PROJECT_NAME} 
     "src/main.cpp"  
 
-    #SDL Wrapper    
-    "src/sdlwrap/sdlwrap.hpp" 
-    "src/sdlwrap/sdlsmallguards.hpp"
-    "src/sdlwrap/sdl_include.hpp" 
-    "src/sdlwrap/sdlrenderer.hpp" "src/sdlwrap/sdlrenderer.cpp"
-    "src/sdlwrap/sdlwindow.hpp" "src/sdlwrap/sdlwindow.cpp" 
-    "src/sdlwrap/sdltexture.hpp" "src/sdlwrap/sdltexture.cpp" 
-    "src/sdlwrap/sdlsurface.hpp" "src/sdlwrap/sdlsurface.cpp"
+    #SDL Graphics Layer    
+    "src/graphics/sdl/sdlwrap.hpp" 
+    "src/graphics/sdl/sdlsmallguards.hpp"
+    "src/graphics/sdl/sdl_include.hpp" 
+    "src/graphics/sdl/sdlrenderer.hpp" "src/graphics/sdl/sdlrenderer.cpp"
+    "src/graphics/sdl/sdlwindow.hpp" "src/graphics/sdl/sdlwindow.cpp" 
+    "src/graphics/sdl/sdltexture.hpp" "src/graphics/sdl/sdltexture.cpp" 
+    "src/graphics/sdl/sdlsurface.hpp" "src/graphics/sdl/sdlsurface.cpp"
+    "src/graphics/sdl/sdl_assets_loader.hpp" "src/graphics/sdl/sdl_assets_loader.cpp"
+    "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
     
     #Game
-    "src/assets_loader.hpp" "src/assets_loader.cpp"
     "src/game/game_map.hpp" "src/game/game_map.cpp"
     "src/game/tile.hpp"  
     "src/game/units.hpp"
+    "src/graphics/game_renderer.hpp" 
 )
 
 #SYSTEM PUBLIC to disable clang warnings

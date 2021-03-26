@@ -5,6 +5,8 @@
 #include "sdltexture.hpp"
 #include "sdlwindow.hpp"
 
+#include <span>
+
 
 namespace sdlwrap {
 
@@ -32,6 +34,8 @@ namespace sdlwrap {
         void drawTexture(const SDLTexture& texture, int32_t x, int32_t y);
         void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, float xScale, float yScale);
         void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, uint32_t width, uint32_t height);
+
+        void drawLines(const std::span<SDL_Point> points);
 
         SDLTexture createTexture(const SDLSurface& surface);
         SDL_Renderer* get() const noexcept;

@@ -4,7 +4,6 @@ enum class TileType {
     GRASS, SAND, BUILDING
 };
 
-
 class Tile {
 public:
     const bool accessible{true};
