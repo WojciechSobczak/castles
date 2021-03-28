@@ -1,6 +1,6 @@
 #pragma once 
-#include "sdlwrap.hpp"
 #include <string>
+#include "sdl_include.hpp"
 
 namespace sdlwrap {
     class SDLException {

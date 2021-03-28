@@ -32,25 +32,29 @@ else()
 endif()
 
 add_executable(${PROJECT_NAME} 
+    "src/include/defines.hpp" 
     "src/main.cpp"  
 
     #SDL Graphics Layer    
-    "src/graphics/sdl/sdlwrap.hpp" 
-    "src/graphics/sdl/sdlsmallguards.hpp"
-    "src/graphics/sdl/sdl_include.hpp" 
-    "src/graphics/sdl/sdlrenderer.hpp" "src/graphics/sdl/sdlrenderer.cpp"
-    "src/graphics/sdl/sdlwindow.hpp" "src/graphics/sdl/sdlwindow.cpp" 
-    "src/graphics/sdl/sdltexture.hpp" "src/graphics/sdl/sdltexture.cpp" 
-    "src/graphics/sdl/sdlsurface.hpp" "src/graphics/sdl/sdlsurface.cpp"
+    "src/sdl/sdl_small_guards.hpp"
+    "src/sdl/sdl_include.hpp" 
+    "src/graphics/render_layer.hpp" 
+    "src/graphics/sdl/sdl_renderer.hpp" "src/graphics/sdl/sdl_renderer.cpp"
+    "src/graphics/sdl/sdl_window.hpp" "src/graphics/sdl/sdl_window.cpp" 
+    "src/graphics/sdl/sdl_texture.hpp" "src/graphics/sdl/sdl_texture.cpp" 
+    "src/graphics/sdl/sdl_surface.hpp" "src/graphics/sdl/sdl_surface.cpp"
     "src/graphics/sdl/sdl_assets_loader.hpp" "src/graphics/sdl/sdl_assets_loader.cpp"
     "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
+    "src/graphics/sdl/sdl_render_layer.hpp"
     
     #Game
     "src/game/game_map.hpp" "src/game/game_map.cpp"
     "src/game/tile.hpp"  
     "src/game/units.hpp"
     "src/graphics/game_renderer.hpp" 
-)
+    "src/input/input_handler.hpp" 
+    "src/input/sdl/sdl_input_handler.hpp" "src/input/sdl/sdl_input_handler.cpp" 
+ "src/graphics/sdl/sdl_render_layer.cpp" "src/application/application.hpp"  "src/application/sdl/sdl_application.cpp" "src/application/sdl/sdl_application.hpp" "src/application/application.cpp")
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")
@@ -58,6 +62,13 @@ target_link_directories("${PROJECT_NAME}" PUBLIC "${SDL_PATH}/lib/x64/")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2_ttf")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2_image")
+
+#Debug mode features enable macro
+if (${DEBUG_BUILD})
+    add_compile_definitions(DEBUG_MODE_ENABLED)
+endif()
+target_include_directories("${PROJECT_NAME}" PUBLIC "src/include/")
+
 
 #Warnings setup
 add_compile_options(

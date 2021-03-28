@@ -1,4 +1,4 @@
-#include "sdlsurface.hpp"
+#include "sdl_surface.hpp"
 
 
 namespace sdlwrap {

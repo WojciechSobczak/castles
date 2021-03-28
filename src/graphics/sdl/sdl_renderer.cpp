@@ -1,4 +1,4 @@
-#include "sdlrenderer.hpp"
+#include "sdl_renderer.hpp"
 #include <string>
 
 namespace sdlwrap {
@@ -105,7 +105,7 @@ namespace sdlwrap {
         }
     }
 
-    void SDLRenderer::drawLines(const std::span<SDL_Point> points) {
+    void SDLRenderer::drawLines(const std::span<const SDL_Point> points) {
         int result = SDL_RenderDrawLines(this->renderer, points.data(), points.size());
         if (result != 0) {
             throw SDLException("SDL_RenderCopy() failed");

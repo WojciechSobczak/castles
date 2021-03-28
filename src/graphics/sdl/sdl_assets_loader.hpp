@@ -1,5 +1,7 @@
 #pragma once
-#include "sdlwrap.hpp"
+#include "sdl_surface.hpp"
+#include "sdl_texture.hpp"
+#include "sdl_renderer.hpp"
 
 class SDLAssetsLoader {
 

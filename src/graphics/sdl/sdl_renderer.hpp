@@ -1,9 +1,9 @@
 #pragma once
-#include "sdl_include.hpp"
-#include "sdlsmallguards.hpp"
-#include "sdlsurface.hpp"
-#include "sdltexture.hpp"
-#include "sdlwindow.hpp"
+#include "../../sdl/sdl_include.hpp"
+#include "../../sdl/sdl_small_guards.hpp"
+#include "sdl_surface.hpp"
+#include "sdl_texture.hpp"
+#include "sdl_window.hpp"
 
 #include <span>
 
@@ -35,7 +35,7 @@ namespace sdlwrap {
         void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, float xScale, float yScale);
         void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, uint32_t width, uint32_t height);
 
-        void drawLines(const std::span<SDL_Point> points);
+        void drawLines(const std::span<const SDL_Point> points);
 
         SDLTexture createTexture(const SDLSurface& surface);
         SDL_Renderer* get() const noexcept;

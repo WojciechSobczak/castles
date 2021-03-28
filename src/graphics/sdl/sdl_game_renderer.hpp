@@ -1,7 +1,7 @@
 #pragma once
 #include "../game_renderer.hpp"
-#include "sdlwrap.hpp"
 #include "sdl_assets_loader.hpp"
+#include "sdl_render_layer.hpp"
 #include <array>
 
 
@@ -13,14 +13,17 @@ private:
     float zoomScale = 1.0f;
 
     constexpr uint8_t tileTypeToAssetIndex(const TileType tileType) const noexcept;
+    bool debugMode = true;
 
 public:
 
-    bool debugMode = false;
-
     SDLGameRenderer(sdlwrap::SDLRenderer& sdlRenderer);
+    virtual ~SDLGameRenderer() = default;
 
-    virtual void renderGameMap(GameMap& gameMap) override;
     virtual void addToZoomScale(float component) noexcept override;
+    virtual std::chrono::nanoseconds renderLayer(IRenderLayer& irenderLayer) override;
+
+    IF_DEBUG_MODE_ENABLED(virtual void setDebugMode(bool debugMode) noexcept override);
+
     void loadTextures();
 };

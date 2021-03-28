@@ -1,6 +1,6 @@
-#include "sdl_include.hpp"
-#include "sdlwindow.hpp"
-#include "sdlsmallguards.hpp"
+#include "../../sdl/sdl_include.hpp"
+#include "../../sdl/sdl_small_guards.hpp"
+#include "sdl_window.hpp"
 
 
 namespace sdlwrap {
