@@ -9,7 +9,7 @@ public:
     virtual ~IApplication() = default;
     virtual void start();
 
-    virtual std::unique_ptr<IGameRenderer> createRenderer() = 0;
-    virtual std::unique_ptr<IInputHandler> createInputHandler() = 0;
-    virtual std::vector<std::unique_ptr<IRenderLayer>> createRenderLayers() = 0;
+    virtual std::shared_ptr<IGameRenderer> createRenderer() = 0;
+    virtual std::shared_ptr<IInputHandler> createInputHandler() = 0;
+    virtual std::vector<std::unique_ptr<IRenderLayer>>& getRenderLayers() = 0;
 };

@@ -9,7 +9,7 @@ namespace sdlwrap {
     public:
         SDLException(const std::string& message) : message(message + " | SDLMessage: " + SDL_GetError()) {}
 
-        const std::string& getMessage() {
+        const std::string& getMessage() const noexcept {
             return this->message;
         }
     };
@@ -17,7 +17,10 @@ namespace sdlwrap {
     class SDLLifetimeGuard {
     public:
         SDLLifetimeGuard() {
-            SDL_Init(SDL_INIT_VIDEO);
+            SDL_SetMainReady();
+            if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+                throw SDLException("SDL_Init(SDL_INIT_VIDEO) failed");
+            }
         }
         ~SDLLifetimeGuard() noexcept {
             SDL_Quit();
@@ -27,7 +30,9 @@ namespace sdlwrap {
     class SDLTTFLifetimeGuard {
     public:
         SDLTTFLifetimeGuard() {
-            TTF_Init();
+            if (TTF_Init() != 0) {
+                throw SDLException("TTF_Init() failed");
+            }
         }
         ~SDLTTFLifetimeGuard() noexcept {
             TTF_Quit();

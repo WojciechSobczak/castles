@@ -35,9 +35,13 @@ add_executable(${PROJECT_NAME}
     "src/include/defines.hpp" 
     "src/main.cpp"  
 
+    #Graphics
+    "src/graphics/game_renderer.hpp" 
+    "src/graphics/render_layer.hpp" 
+
     #SDL Graphics Layer    
-    "src/sdl/sdl_small_guards.hpp"
-    "src/sdl/sdl_include.hpp" 
+    "src/application/sdl/sdl_small_guards.hpp"
+    "src/application/sdl/sdl_include.hpp" 
     "src/graphics/render_layer.hpp" 
     "src/graphics/sdl/sdl_renderer.hpp" "src/graphics/sdl/sdl_renderer.cpp"
     "src/graphics/sdl/sdl_window.hpp" "src/graphics/sdl/sdl_window.cpp" 
@@ -45,16 +49,22 @@ add_executable(${PROJECT_NAME}
     "src/graphics/sdl/sdl_surface.hpp" "src/graphics/sdl/sdl_surface.cpp"
     "src/graphics/sdl/sdl_assets_loader.hpp" "src/graphics/sdl/sdl_assets_loader.cpp"
     "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
-    "src/graphics/sdl/sdl_render_layer.hpp"
+    "src/graphics/sdl/layers/sdl_render_layer.hpp"
+    "src/graphics/sdl/layers/sdl_game_layer.hpp" "src/graphics/sdl/layers/sdl_game_layer.cpp"
     
     #Game
     "src/game/game_map.hpp" "src/game/game_map.cpp"
     "src/game/tile.hpp"  
     "src/game/units.hpp"
-    "src/graphics/game_renderer.hpp" 
+
+    #Application
+    "src/application/application.hpp"  "src/application/sdl/sdl_application.cpp" 
     "src/input/input_handler.hpp" 
+    
+    #SDL Application
+    "src/application/sdl/sdl_application.hpp" "src/application/application.cpp"
     "src/input/sdl/sdl_input_handler.hpp" "src/input/sdl/sdl_input_handler.cpp" 
- "src/graphics/sdl/sdl_render_layer.cpp" "src/application/application.hpp"  "src/application/sdl/sdl_application.cpp" "src/application/sdl/sdl_application.hpp" "src/application/application.cpp")
+ )
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")

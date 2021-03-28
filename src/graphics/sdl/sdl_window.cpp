@@ -1,5 +1,5 @@
-#include "../../sdl/sdl_include.hpp"
-#include "../../sdl/sdl_small_guards.hpp"
+#include "../../application/sdl/sdl_include.hpp"
+#include "../../application/sdl/sdl_small_guards.hpp"
 #include "sdl_window.hpp"
 
 

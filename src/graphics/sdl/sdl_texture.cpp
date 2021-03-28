@@ -1,5 +1,5 @@
 #include "sdl_texture.hpp"
-#include "../../sdl/sdl_small_guards.hpp"
+#include "../../application/sdl/sdl_small_guards.hpp"
 
 namespace sdlwrap {
     SDLTexture::SDLTexture(SDL_Texture* texture) : texture(texture) {

@@ -16,3 +16,11 @@ void GameMap::clearTiles() {
 std::vector<Tile>& GameMap::operator[](uint32_t row) {
     return this->tiles[row];
 }
+
+std::vector<Tile>& GameMap::at(uint32_t row) {
+    return this->tiles[row];
+}
+
+Tile& GameMap::at(uint32_t row, uint32_t col) {
+    return this->tiles[row][col];
+}

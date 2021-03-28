@@ -9,8 +9,10 @@ class IGameRenderer {
 public:
     virtual ~IGameRenderer() = default;
 
-    virtual std::chrono::nanoseconds renderLayer(IRenderLayer& renderLayer) = 0;
     virtual void addToZoomScale(float component) noexcept = 0;
+    virtual void renderLayer(IRenderLayer* renderLayer) = 0;
 
-    IF_DEBUG_MODE_ENABLED(virtual void setDebugMode(bool debugMode) noexcept = 0);
+    #ifdef DEBUG_MODE_ENABLED
+    virtual void setDebugMode(bool debugMode) noexcept = 0;
+    #endif // DEBUG_MODE_ENABLED
 };

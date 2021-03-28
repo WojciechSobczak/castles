@@ -1,15 +1,12 @@
 #pragma once
 #include "../game_renderer.hpp"
 #include "sdl_assets_loader.hpp"
-#include "sdl_render_layer.hpp"
 #include <array>
 
 
 class SDLGameRenderer : public IGameRenderer {
 private:
-    sdlwrap::SDLRenderer& sdlRenderer;
-    SDLAssetsLoader assetsLoader;
-    std::array<std::unique_ptr<sdlwrap::SDLTexture>, 1> tiles;
+    std::shared_ptr<sdlwrap::SDLRenderer> sdlRenderer;
     float zoomScale = 1.0f;
 
     constexpr uint8_t tileTypeToAssetIndex(const TileType tileType) const noexcept;
@@ -17,11 +14,11 @@ private:
 
 public:
 
-    SDLGameRenderer(sdlwrap::SDLRenderer& sdlRenderer);
+    SDLGameRenderer(std::shared_ptr<sdlwrap::SDLRenderer> sdlRenderer);
     virtual ~SDLGameRenderer() = default;
 
     virtual void addToZoomScale(float component) noexcept override;
-    virtual std::chrono::nanoseconds renderLayer(IRenderLayer& irenderLayer) override;
+    virtual void renderLayer(IRenderLayer* renderLayer) override;
 
     IF_DEBUG_MODE_ENABLED(virtual void setDebugMode(bool debugMode) noexcept override);
 

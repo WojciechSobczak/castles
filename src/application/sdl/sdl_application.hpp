@@ -4,7 +4,7 @@
 
 #include "../application.hpp"
 #include "../../graphics/sdl/sdl_window.hpp"
-#include "../../sdl/sdl_small_guards.hpp"
+#include "sdl_small_guards.hpp"
 #include "../../graphics/sdl/sdl_renderer.hpp"
 
 
@@ -13,11 +13,15 @@ private:
     sdlwrap::SDLLifetimeGuard sdlGuard{};
     sdlwrap::SDLTTFLifetimeGuard sdlTtfGuard{};
     sdlwrap::SDLWindow window{ "Castles" };
-    sdlwrap::SDLRenderer renderer{ window };
+    std::shared_ptr<sdlwrap::SDLRenderer> renderer = std::make_unique<sdlwrap::SDLRenderer>(window);
+
+
+    std::shared_ptr<GameMap> gameMap = std::make_unique<GameMap>(50, 100);
+    std::vector<std::unique_ptr<IRenderLayer>> layers{};
 public:
     SDLApplication();
 
-    virtual std::unique_ptr<IGameRenderer> createRenderer() override;
-    virtual std::unique_ptr<IInputHandler> createInputHandler() override;
-    virtual std::vector<std::unique_ptr<IRenderLayer>> createRenderLayers() override;
+    virtual std::shared_ptr<IGameRenderer> createRenderer() override;
+    virtual std::shared_ptr<IInputHandler> createInputHandler() override;
+    virtual std::vector<std::unique_ptr<IRenderLayer>>& getRenderLayers() override;
 };

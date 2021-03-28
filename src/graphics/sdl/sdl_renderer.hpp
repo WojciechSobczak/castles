@@ -1,6 +1,6 @@
 #pragma once
-#include "../../sdl/sdl_include.hpp"
-#include "../../sdl/sdl_small_guards.hpp"
+#include "../../application/sdl/sdl_include.hpp"
+#include "../../application/sdl/sdl_small_guards.hpp"
 #include "sdl_surface.hpp"
 #include "sdl_texture.hpp"
 #include "sdl_window.hpp"
@@ -31,9 +31,9 @@ namespace sdlwrap {
         void drawFilledSquare(int32_t x, int32_t y, uint32_t size);
         void drawEmptySquare(int32_t x, int32_t y, uint32_t size);
 
-        void drawTexture(const SDLTexture& texture, int32_t x, int32_t y);
-        void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, float xScale, float yScale);
-        void drawTexture(const SDLTexture& texture, int32_t x, int32_t y, uint32_t width, uint32_t height);
+        void drawTexture(const SDLTexture* texture, int32_t x, int32_t y);
+        void drawTexture(const SDLTexture* texture, int32_t x, int32_t y, float xScale, float yScale);
+        void drawTexture(const SDLTexture* texture, int32_t x, int32_t y, uint32_t width, uint32_t height);
 
         void drawLines(const std::span<const SDL_Point> points);
 

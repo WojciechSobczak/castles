@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../sdl/sdl_include.hpp"
+#include "../application/sdl/sdl_include.hpp"
 
 namespace sdlwrap {
     class SDLWindow {

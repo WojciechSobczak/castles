@@ -1,9 +1,10 @@
 #include "application.hpp"
 #include <defines.hpp>
+#include <spdlog/spdlog.h>
 
 void IApplication::start() {
-    std::unique_ptr<IGameRenderer> gameRenderer = this->createRenderer();
-    std::unique_ptr<IInputHandler> inputHandler = this->createInputHandler();
+    std::shared_ptr<IGameRenderer> gameRenderer = this->createRenderer();
+    std::shared_ptr<IInputHandler> inputHandler = this->createInputHandler();
     inputHandler->setOnMouseWheel(
         [&](int32_t wheel) {
             float scaleAdd = 0;
@@ -20,21 +21,24 @@ void IApplication::start() {
             #ifdef DEBUG_MODE_ENABLED
             static bool debugMode = false;
             if (inputHandler->isLeftCtrlPressed() && inputHandler->isDPressed()) {
+                spdlog::debug("Debug mode {}", debugMode ? "enabled" : "disabled");
                 debugMode = !debugMode;
                 gameRenderer->setDebugMode(debugMode);
+                for (auto& layer : this->getRenderLayers()) {
+                    layer->setDebugMode(debugMode);
+                }
             }
             #endif // DEBUG_MODE_ENABLED
         }
     );
 
-    //std::unique_ptr<IRenderLayer> gameLayer = this->createRenderer();
-
-    GameMap gameMap(50, 100);
     while (true) {
         //If quit signal arrives
         if (inputHandler->handleInputEvents()) {
             return;
         }
-        //gameRenderer->renderLayer(*gameLayer.get());
+        for (auto& layer : this->getRenderLayers()) {
+            gameRenderer->renderLayer(layer.get());
+        }
     }
 }

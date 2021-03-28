@@ -1,5 +1,5 @@
 #include "sdl_input_handler.hpp"
-#include "../../sdl/sdl_include.hpp"
+#include "../../application/sdl/sdl_include.hpp"
 
 #include <spdlog/spdlog.h>
 

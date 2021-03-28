@@ -92,14 +92,14 @@ namespace sdlwrap {
         return texture;
     }
 
-    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y, uint32_t width, uint32_t height) {
+    void SDLRenderer::drawTexture(const SDLTexture* texture, int32_t x, int32_t y, uint32_t width, uint32_t height) {
         SDL_Rect rect{
             .x = x,
             .y = y,
             .w = static_cast<int>(width),
             .h = static_cast<int>(height)
         };
-        int result = SDL_RenderCopy(this->renderer, texture.get(), nullptr, &rect);
+        int result = SDL_RenderCopy(this->renderer, texture->get(), nullptr, &rect);
         if (result != 0) {
             throw SDLException("SDL_RenderCopy() failed");
         }
@@ -112,11 +112,12 @@ namespace sdlwrap {
         }
     }
 
-    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y) {
-        this->drawTexture(texture, x, y, texture.getWidth(), texture.getHeight());
+    void SDLRenderer::drawTexture(const SDLTexture* texture, int32_t x, int32_t y) {
+        this->drawTexture(texture, x, y, texture->getWidth(), texture->getHeight());
     }
-    void SDLRenderer::drawTexture(const SDLTexture& texture, int32_t x, int32_t y, float xScale, float yScale) {
-        this->drawTexture(texture, x, y, static_cast<uint32_t>(texture.getWidth() * xScale), static_cast<uint32_t>(texture.getHeight() * yScale));
+
+    void SDLRenderer::drawTexture(const SDLTexture* texture, int32_t x, int32_t y, float xScale, float yScale) {
+        this->drawTexture(texture, x, y, static_cast<uint32_t>(texture->getWidth() * xScale), static_cast<uint32_t>(texture->getHeight() * yScale));
     }
 
     SDL_Renderer* SDLRenderer::get() const noexcept {
