@@ -44,23 +44,50 @@ namespace sdlwrap {
         TTF_Font* font{};
     public:
         SDLTTFFont(TTF_Font* font) : font(font) {}
-        SDLTTFFont(const std::string& path, uint32_t size) {
-            this->font = TTF_OpenFont(path.c_str(), size);
-            if (this->font == nullptr) {
-                throw SDLException("TTF_OpenFont() failed");
-            }
-        }
+
         SDLTTFFont(SDLTTFFont&& other) noexcept {
             this->font = other.font;
             other.font = nullptr;
         }
+        SDLTTFFont& operator=(SDLTTFFont&& other) noexcept {
+            this->font = other.font;
+            other.font = nullptr;
+        }
+
         ~SDLTTFFont() noexcept {
-            TTF_CloseFont(this->font);
+            if (this->font != nullptr) {
+                TTF_CloseFont(this->font);
+            }
         }
 
         TTF_Font* get() const noexcept {
             return this->font;
         }
+    };
 
+    class SDLRWops {
+    private:
+        SDL_RWops* memoryStream{};
+    public:
+        SDLRWops(SDL_RWops* memoryStream) : memoryStream(memoryStream) {}
+
+        SDLRWops(SDLRWops&& other) noexcept {
+            this->memoryStream = other.memoryStream;
+            other.memoryStream = nullptr;
+        }
+        SDLRWops& operator=(SDLRWops&& other) noexcept {
+            this->memoryStream = other.memoryStream;
+            other.memoryStream = nullptr;
+        }
+
+        ~SDLRWops() noexcept {
+            if (this->memoryStream != nullptr) {
+                SDL_RWclose(this->memoryStream);
+            }
+        }
+
+        SDL_RWops* get() const noexcept {
+            return this->memoryStream;
+        }
     };
 }

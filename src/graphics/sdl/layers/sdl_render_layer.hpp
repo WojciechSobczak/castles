@@ -3,10 +3,14 @@
 #include "../sdl_renderer.hpp"
 #include <chrono>
 
-class ISDLRenderLayer : public IRenderLayer {
+class SDLRenderLayer : public IRenderLayer {
+protected:
+    std::shared_ptr<sdlwrap::SDLRenderer> renderer;
 public:
-    virtual ~ISDLRenderLayer() = default;
-    virtual std::chrono::nanoseconds render(sdlwrap::SDLRenderer* renderer) = 0;
-    virtual void loadResources() = 0;
+
+    virtual ~SDLRenderLayer() = default;
+    SDLRenderLayer(std::shared_ptr<sdlwrap::SDLRenderer> renderer) : renderer(renderer) {};
+    virtual void loadResources(IAssetsLoader* assetsLoader) = 0;
+    virtual void render() = 0;
 };
 

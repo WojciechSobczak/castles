@@ -1,21 +1,27 @@
 #pragma once
-#include <memory>
-#include <array>
+
 #include "sdl_render_layer.hpp"
-#include "../../../graphics/sdl/sdl_assets_loader.hpp"
-#include "../../../graphics/sdl/sdl_texture.hpp"
+#include "../sdl_texture.hpp"
+#include "../sdl_renderer.hpp"
 #include "../../../game/game_map.hpp"
 
-class SDLGameLayer : public ISDLRenderLayer {
+#include <memory>
+#include <array>
+
+class SDLGameLayer : public SDLRenderLayer {
 private:
     std::shared_ptr<GameMap> gameMap;
-    std::shared_ptr<sdlwrap::SDLRenderer> renderer;
+    std::array<std::shared_ptr<sdlwrap::SDLTexture>, 1> tiles;
 
-    SDLAssetsLoader assetsLoader;
-    std::array<std::unique_ptr<sdlwrap::SDLTexture>, 1> tiles;
 public:
-    SDLGameLayer(std::shared_ptr<GameMap> gameMap, std::shared_ptr<sdlwrap::SDLRenderer> renderer);
-    virtual std::chrono::nanoseconds render(sdlwrap::SDLRenderer* renderer) override;
-    virtual void loadResources() override;
-    
+    SDLGameLayer(
+        std::shared_ptr<sdlwrap::SDLRenderer> renderer, 
+        std::shared_ptr<GameMap> gameMap
+    ) : 
+        SDLRenderLayer(renderer), 
+        gameMap(gameMap) 
+    {};
+    virtual void render() override;
+    virtual void setZoomFactor(float zoomFactor) noexcept override;
+    virtual void loadResources(IAssetsLoader* assetsLoader) override;
 };

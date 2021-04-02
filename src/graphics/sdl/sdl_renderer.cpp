@@ -84,6 +84,18 @@ namespace sdlwrap {
         this->drawEmptyRectangle(x, y, size, size);
     }
 
+    SDLTexture SDLRenderer::createTextTexture(const SDLTTFFont& font, const std::string& text, SDL_Color color) {
+        return this->createTextTexture(font, text, color);
+    }
+
+    SDLTexture SDLRenderer::createTextTexture(const SDLTTFFont* font, const std::string& text, SDL_Color color) {
+        SDLSurface surface = TTF_RenderText_Solid(font->get(), text.c_str(), color);
+        if (surface.get() == nullptr) {
+            throw SDLException("TTF_RenderText_Solid() failed");
+        }
+        return this->createTexture(surface);
+    }
+
     SDLTexture SDLRenderer::createTexture(const SDLSurface& surface) {
         SDLTexture texture{ SDL_CreateTextureFromSurface(this->renderer, surface.get()) };
         if (texture.get() == nullptr) {

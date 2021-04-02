@@ -1,15 +1,25 @@
 #pragma once
 #include <functional>
 #include <atomic>
+#include "assets_loader.hpp"
 
 class IRenderLayer {
+#ifdef DEBUG_MODE_ENABLED
 protected:
-    #ifdef DEBUG_MODE_ENABLED
     bool debugMode = false;
-    #endif // DEBUG_MODE_ENABLED
 public:
-    virtual ~IRenderLayer() = default;
-    #ifdef DEBUG_MODE_ENABLED
     virtual void setDebugMode(bool debugMode) { this->debugMode = debugMode; };
-    #endif // DEBUG_MODE_ENABLED
+    virtual bool isDebugMode() { return this->debugMode; };
+#endif // DEBUG_MODE_ENABLED   
+
+protected:
+    float zoomFactor = 1.0f;
+public:
+
+    virtual ~IRenderLayer() = default;
+
+    virtual void setZoomFactor(float zoomFactor) noexcept { this->zoomFactor = zoomFactor; };
+    virtual float getZoomFactor() noexcept { return this->zoomFactor; };
+
+    virtual void loadResources(IAssetsLoader* assetsLoader) = 0;
 };

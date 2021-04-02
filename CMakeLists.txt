@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME}
     #Graphics
     "src/graphics/game_renderer.hpp" 
     "src/graphics/render_layer.hpp" 
+    "src/graphics/assets_loader.hpp"
 
     #SDL Graphics Layer    
     "src/application/sdl/sdl_small_guards.hpp"
@@ -47,10 +48,12 @@ add_executable(${PROJECT_NAME}
     "src/graphics/sdl/sdl_window.hpp" "src/graphics/sdl/sdl_window.cpp" 
     "src/graphics/sdl/sdl_texture.hpp" "src/graphics/sdl/sdl_texture.cpp" 
     "src/graphics/sdl/sdl_surface.hpp" "src/graphics/sdl/sdl_surface.cpp"
-    "src/graphics/sdl/sdl_assets_loader.hpp" "src/graphics/sdl/sdl_assets_loader.cpp"
+     
     "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
     "src/graphics/sdl/layers/sdl_render_layer.hpp"
     "src/graphics/sdl/layers/sdl_game_layer.hpp" "src/graphics/sdl/layers/sdl_game_layer.cpp"
+
+    "src/graphics/fs_assets_loader.hpp" "src/graphics/fs_assets_loader.cpp"
     
     #Game
     "src/game/game_map.hpp" "src/game/game_map.cpp"
@@ -58,13 +61,13 @@ add_executable(${PROJECT_NAME}
     "src/game/units.hpp"
 
     #Application
-    "src/application/application.hpp"  "src/application/sdl/sdl_application.cpp" 
+    "src/application/application.hpp" "src/application/application.cpp"
     "src/input/input_handler.hpp" 
     
     #SDL Application
-    "src/application/sdl/sdl_application.hpp" "src/application/application.cpp"
+    "src/application/sdl/sdl_application.hpp" "src/application/sdl/sdl_application.cpp" 
     "src/input/sdl/sdl_input_handler.hpp" "src/input/sdl/sdl_input_handler.cpp" 
- )
+)
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")

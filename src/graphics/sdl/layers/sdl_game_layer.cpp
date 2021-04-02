@@ -1,16 +1,10 @@
 #include "sdl_game_layer.hpp"
 #include "../../../game/units.hpp"
+#include <spdlog/spdlog.h>
 
-SDLGameLayer::SDLGameLayer(std::shared_ptr<GameMap> gameMap, std::shared_ptr<sdlwrap::SDLRenderer> renderer) : gameMap(gameMap), renderer(renderer) {
-    this->loadResources();
-}
-
-std::chrono::nanoseconds SDLGameLayer::render(sdlwrap::SDLRenderer*) {
-    auto beforeRenderTime = std::chrono::high_resolution_clock::now();
-
-    renderer->clear();
+void SDLGameLayer::render() {
     renderer->setRenderColor({ .r = 255, .g = 255, .b = 255 });
-    renderer->setRenderScale(1.f);// renderer->getZoomScale());
+    renderer->setRenderScale(this->zoomFactor);
 
     constexpr uint32_t tileWidth = uint32_t(units::TILE_UNITS);
     constexpr uint32_t tileHeight = tileWidth / 2;
@@ -74,15 +68,21 @@ std::chrono::nanoseconds SDLGameLayer::render(sdlwrap::SDLRenderer*) {
         }
         rowYStart += tileHeight / 2;
     }
-
-    auto afterRenderTime = std::chrono::high_resolution_clock::now();
-    auto frameTime = std::chrono::duration_cast<std::chrono::nanoseconds>(afterRenderTime - beforeRenderTime);
-
-    renderer->present();
-    return frameTime;
 }
 
-void SDLGameLayer::loadResources() {
-    auto grassTexture = std::make_unique<sdlwrap::SDLTexture>(std::move(assetsLoader.loadTexture("grass.png", renderer.get())));
-    tiles[uint32_t(TileType::GRASS)] = std::move(grassTexture);
+void SDLGameLayer::loadResources(IAssetsLoader* assetsLoader) {
+    auto bytes = assetsLoader->loadTexture("grass.png");
+    sdlwrap::SDLRWops rwops = SDL_RWFromMem(bytes.data(), bytes.size());
+    if (rwops.get() == nullptr) {
+        throw sdlwrap::SDLException("SDL_RWFromMem() failed");
+    }
+    sdlwrap::SDLSurface surface = IMG_Load_RW(rwops.get(), 0);
+    tiles[uint32_t(TileType::GRASS)] = std::make_shared<sdlwrap::SDLTexture>(renderer->createTexture(surface));
+}
+
+void SDLGameLayer::setZoomFactor(float zoomFactor) noexcept {
+    this->zoomFactor = zoomFactor;
+    if (this->zoomFactor < 0.1) this->zoomFactor = 0.1;
+    if (this->zoomFactor > 5) this->zoomFactor = 5;
+    spdlog::debug("Game layer zoom scale: {}", this->zoomFactor);
 }

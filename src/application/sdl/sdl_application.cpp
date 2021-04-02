@@ -1,7 +1,6 @@
 #include "sdl_application.hpp"
 
 #include "../../graphics/sdl/sdl_renderer.hpp"
-#include "../../graphics/sdl/sdl_assets_loader.hpp"
 #include "../../graphics/sdl/sdl_game_renderer.hpp"
 #include "../../graphics/sdl/sdl_window.hpp"
 
@@ -17,9 +16,13 @@
 #include "../../input/sdl/sdl_input_handler.hpp"
 #include "../../graphics/sdl/layers/sdl_game_layer.hpp"
 
+#include "../../graphics/fs_assets_loader.hpp"
+
 
 SDLApplication::SDLApplication() {
-    auto gameLayer = std::make_unique<SDLGameLayer>(gameMap, renderer);
+    auto gameLayer = std::make_unique<SDLGameLayer>(renderer, gameMap);
+    FSAssetsLoader assetsLoader;
+    gameLayer->loadResources(&assetsLoader);
     this->layers.emplace_back(std::move(gameLayer));
 }
 

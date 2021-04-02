@@ -4,32 +4,39 @@
 
 #include "layers/sdl_render_layer.hpp"
 
-void SDLGameRenderer::addToZoomScale(float component) noexcept {
-    zoomScale += component;
-    if (zoomScale < 0.1) zoomScale = 0.1;
-    if (zoomScale > 5) zoomScale = 5;
-    spdlog::debug("Zoom scale: {}", zoomScale);
-}
-
-SDLGameRenderer::SDLGameRenderer(std::shared_ptr<sdlwrap::SDLRenderer> sdlRenderer) : sdlRenderer(sdlRenderer) {
-    this->loadTextures();
-}
-
-constexpr uint8_t SDLGameRenderer::tileTypeToAssetIndex(const TileType tileType) const noexcept {
-    return uint8_t(tileType);
-}
-
-void SDLGameRenderer::loadTextures() {
-  
-}
-
 void SDLGameRenderer::renderLayer(IRenderLayer* renderLayer) {    
-    ISDLRenderLayer* sdlRenderLayer = static_cast<ISDLRenderLayer*>(renderLayer);
-    sdlRenderLayer->render(this->sdlRenderer.get());
+    SDLRenderLayer* sdlRenderLayer = static_cast<SDLRenderLayer*>(renderLayer);
+    sdlRenderLayer->render();
 }
 
-IF_DEBUG_MODE_ENABLED(
-    void SDLGameRenderer::setDebugMode(bool debugMode) noexcept {
-        this->debugMode = debugMode;
+void SDLGameRenderer::beforeRender() {
+    this->renderer->clear();
+}
+
+void SDLGameRenderer::afterRender() {
+    this->renderer->present();
+}
+
+
+#ifdef DEBUG_MODE_ENABLED
+void SDLGameRenderer::renderFPSCounter(size_t fps) {    
+    std::string message = "FPS: " + std::to_string(fps);
+    auto texture = this->renderer->createTextTexture(this->fpsFont.get(), message, { .r = 255, .g = 255, .b = 255, .a = 0 });
+    this->renderer->setRenderScale(1.f);
+    this->renderer->drawTexture(&texture, 0, 0);
+};
+
+void SDLGameRenderer::loadFPSCounterFont(IAssetsLoader* assetsLoader) {
+    static auto bytes = assetsLoader->loadFont("courier_prime.ttf");
+    static sdlwrap::SDLRWops rwops = SDL_RWFromMem(bytes.data(), bytes.size());
+    if (rwops.get() == nullptr) {
+        throw sdlwrap::SDLException("SDL_RWFromMem() failed");
     }
-);
+    sdlwrap::SDLTTFFont font = TTF_OpenFontRW(rwops.get(), 0, 16);
+    if (font.get() == nullptr) {
+        throw sdlwrap::SDLException("TTF_OpenFontRW() failed");
+    }
+    this->fpsFont = std::make_shared<sdlwrap::SDLTTFFont>(std::move(font));
+}
+#endif // DEBUG_MODE_ENABLED
+

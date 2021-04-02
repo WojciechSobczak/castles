@@ -6,13 +6,22 @@
 #include "render_layer.hpp"
 
 class IGameRenderer {
+#ifdef DEBUG_MODE_ENABLED
+protected:
+    bool debugMode = true;
+public:
+    virtual void setDebugMode(bool debugMode) noexcept { this->debugMode = debugMode; };
+    virtual void loadFPSCounterFont(IAssetsLoader* assetsLoader) = 0;
+    virtual void renderFPSCounter(size_t fps) = 0;
+#endif // DEBUG_MODE_ENABLED
+
+
 public:
     virtual ~IGameRenderer() = default;
 
-    virtual void addToZoomScale(float component) noexcept = 0;
+    virtual void beforeRender() = 0;
+    virtual void afterRender() = 0;
     virtual void renderLayer(IRenderLayer* renderLayer) = 0;
 
-    #ifdef DEBUG_MODE_ENABLED
-    virtual void setDebugMode(bool debugMode) noexcept = 0;
-    #endif // DEBUG_MODE_ENABLED
+
 };

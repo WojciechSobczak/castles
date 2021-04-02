@@ -37,6 +37,9 @@ namespace sdlwrap {
 
         void drawLines(const std::span<const SDL_Point> points);
 
+        SDLTexture createTextTexture(const SDLTTFFont* font, const std::string& text, SDL_Color color);
+        SDLTexture createTextTexture(const SDLTTFFont& font, const std::string& text, SDL_Color color);
+
         SDLTexture createTexture(const SDLSurface& surface);
         SDL_Renderer* get() const noexcept;
     };
