@@ -22,14 +22,22 @@ set(CMAKE_PREFIX_PATH "${DEPENDENCIES_PATHS}" "${CMAKE_PREFIX_PATH}")
 #All libraries output directory
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/")
 
+if (MSVC)
+    if (${DEBUG_BUILD})
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
+    else()
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
+    endif()
+endif()
+
+if (DEFINED CPPCHECK_PATH)
+    message("CPPCheck detected in: ${CPPCHECK_PATH}")
+    set(CMAKE_CXX_CPPCHECK "${CPPCHECK_PATH}")
+endif()
+
+
 find_package(spdlog CONFIG REQUIRED)
 link_libraries(spdlog::spdlog)
-
-if (${DEBUG_BUILD})
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
-else()
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
-endif()
 
 add_executable(${PROJECT_NAME} 
     "src/include/defines.hpp" 
@@ -71,6 +79,7 @@ add_executable(${PROJECT_NAME}
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")
+target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "src/")
 target_link_directories("${PROJECT_NAME}" PUBLIC "${SDL_PATH}/lib/x64/")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2_ttf")

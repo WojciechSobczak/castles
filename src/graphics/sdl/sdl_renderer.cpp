@@ -85,7 +85,7 @@ namespace sdlwrap {
     }
 
     SDLTexture SDLRenderer::createTextTexture(const SDLTTFFont& font, const std::string& text, SDL_Color color) {
-        return this->createTextTexture(font, text, color);
+        return this->createTextTexture(&font, text, color);
     }
 
     SDLTexture SDLRenderer::createTextTexture(const SDLTTFFont* font, const std::string& text, SDL_Color color) {

@@ -19,6 +19,5 @@ namespace sdlwrap {
         uint32_t getWidth() const noexcept;
         uint32_t getHeight() const noexcept;
 
-        void rescale(float scaleFactor);
     };
 }

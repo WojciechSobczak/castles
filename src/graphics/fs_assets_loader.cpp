@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iterator>
 #include <filesystem>
+#include <spdlog/spdlog.h>
 
 #ifdef ASSETS_PREFIX
 constexpr std::string_view BASE_PATH = ASSETS_PREFIX;
@@ -21,10 +22,12 @@ std::vector<uint8_t> FSAssetsLoader::loadFile(const std::string& path) {
 
 std::vector<uint8_t> FSAssetsLoader::loadTexture(const std::string& path) {
     const std::string texturePath = std::string(BASE_PATH) + "/textures/" + path;
+    spdlog::debug("Loading texture from: {}", path);
     return loadFile(texturePath);
 }
 
 std::vector<uint8_t> FSAssetsLoader::loadFont(const std::string& path) {
     const std::string fontPath = std::string(BASE_PATH) + "/fonts/" + path;
+    spdlog::debug("Loading font from: {}", path);
     return loadFile(fontPath);
 }

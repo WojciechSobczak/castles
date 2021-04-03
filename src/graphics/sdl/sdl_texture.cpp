@@ -9,7 +9,8 @@ namespace sdlwrap {
     SDLTexture::SDLTexture(SDLTexture&& other) noexcept {
         this->texture = other.texture;
         other.texture = nullptr;
-        loadProperties();
+        this->width = other.width;
+        this->height = other.height;
     }
     SDLTexture::~SDLTexture() noexcept {
         SDL_DestroyTexture(this->texture);
@@ -27,7 +28,7 @@ namespace sdlwrap {
 
         int result = SDL_QueryTexture(this->texture, &format, &access, &loadedWidth, &loadedHeight);
         if (result != 0) {
-            throw SDLException("SDL_RenderCopy() failed");
+            throw SDLException("SDL_QueryTexture() failed");
         }
 
         this->width = static_cast<uint32_t>(loadedWidth);
