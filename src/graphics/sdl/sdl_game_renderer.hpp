@@ -7,7 +7,7 @@
 class SDLGameRenderer : public IGameRenderer {
 #ifdef DEBUG_MODE_ENABLED
 protected:
-    std::shared_ptr<sdlwrap::SDLTTFFont> fpsFont;
+    std::shared_ptr<sdlwrap::SDLTTFFont> fpsFont{};
     virtual void renderFPSCounter(size_t fps) override;
     virtual void loadFPSCounterFont(IAssetsLoader* assetsLoader) override;
 #endif // DEBUG_MODE_ENABLED

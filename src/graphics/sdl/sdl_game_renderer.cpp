@@ -27,16 +27,18 @@ void SDLGameRenderer::renderFPSCounter(size_t fps) {
 };
 
 void SDLGameRenderer::loadFPSCounterFont(IAssetsLoader* assetsLoader) {
-    static auto bytes = assetsLoader->loadFont("courier_prime.ttf");
-    static sdlwrap::SDLRWops rwops = SDL_RWFromMem(bytes.data(), bytes.size());
-    if (rwops.get() == nullptr) {
-        throw sdlwrap::SDLException("SDL_RWFromMem() failed");
+    if (this->fpsFont == nullptr) {
+        static auto bytes = assetsLoader->loadFont("courier_prime.ttf");
+        static sdlwrap::SDLRWops rwops = SDL_RWFromMem(bytes.data(), bytes.size());
+        if (rwops.get() == nullptr) {
+            throw sdlwrap::SDLException("SDL_RWFromMem() failed");
+        }
+        sdlwrap::SDLTTFFont font = TTF_OpenFontRW(rwops.get(), 0, 16);
+        if (font.get() == nullptr) {
+            throw sdlwrap::SDLException("TTF_OpenFontRW() failed");
+        }
+        this->fpsFont = std::make_shared<sdlwrap::SDLTTFFont>(std::move(font));
     }
-    sdlwrap::SDLTTFFont font = TTF_OpenFontRW(rwops.get(), 0, 16);
-    if (font.get() == nullptr) {
-        throw sdlwrap::SDLException("TTF_OpenFontRW() failed");
-    }
-    this->fpsFont = std::make_shared<sdlwrap::SDLTTFFont>(std::move(font));
 }
 #endif // DEBUG_MODE_ENABLED
 

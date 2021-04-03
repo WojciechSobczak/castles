@@ -1,8 +1,7 @@
 #include "application.hpp"
-#include <defines.hpp>
 #include <spdlog/spdlog.h>
 
-#include "../graphics/fs_assets_loader.hpp"
+#include "graphics/fs_assets_loader.hpp"
 
 void IApplication::start() {
     std::shared_ptr<IGameRenderer> gameRenderer = this->createRenderer();
@@ -41,7 +40,7 @@ void IApplication::start() {
     );
 
 
-    auto assetsLoader = std::make_unique<FSAssetsLoader>();
+    auto assetsLoader = this->createAssetsLoader();
     for (auto& layer : this->getRenderLayers()) {
         layer->loadResources(assetsLoader.get());
     }

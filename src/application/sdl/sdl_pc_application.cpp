@@ -1,4 +1,4 @@
-#include "sdl_application.hpp"
+#include "sdl_pc_application.hpp"
 
 #include "graphics/sdl/sdl_game_renderer.hpp"
 #include "graphics/sdl/sdl_renderer.hpp"
@@ -11,20 +11,26 @@
 
 
 
-SDLApplication::SDLApplication() {
+SDLPCApplication::SDLPCApplication() {
     this->layers.emplace_back(std::make_unique<SDLGameLayer>(renderer, gameMap));
 }
 
-std::shared_ptr<IGameRenderer> SDLApplication::createRenderer() {
+std::shared_ptr<IGameRenderer> SDLPCApplication::createRenderer() {
     this->renderer->enableDrawBlendMode();
     return std::make_shared<SDLGameRenderer>(this->renderer);
 }
 
-std::shared_ptr<IInputHandler> SDLApplication::createInputHandler() {
+std::shared_ptr<IInputHandler> SDLPCApplication::createInputHandler() {
     return std::make_shared<SDLInputHandler>();
 }
 
-std::vector<std::unique_ptr<IRenderLayer>>& SDLApplication::getRenderLayers() {
+std::shared_ptr<IAssetsLoader> SDLPCApplication::createAssetsLoader() {
+    return std::make_shared<FSAssetsLoader>();
+}
+
+std::vector<std::unique_ptr<IRenderLayer>>& SDLPCApplication::getRenderLayers() {
     return layers;
 }
+
+
 

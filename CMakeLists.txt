@@ -39,47 +39,56 @@ endif()
 find_package(spdlog CONFIG REQUIRED)
 link_libraries(spdlog::spdlog)
 
-add_executable(${PROJECT_NAME} 
-    "src/include/defines.hpp" 
-    "src/main.cpp"  
-
+set(SRC_FILES 
     #Graphics
     "src/graphics/game_renderer.hpp" 
     "src/graphics/render_layer.hpp" 
     "src/graphics/assets_loader.hpp"
-
-    #SDL Graphics Layer    
-    "src/application/sdl/sdl_small_guards.hpp"
-    "src/application/sdl/sdl_include.hpp" 
     "src/graphics/render_layer.hpp" 
-    "src/graphics/sdl/sdl_renderer.hpp" "src/graphics/sdl/sdl_renderer.cpp"
-    "src/graphics/sdl/sdl_window.hpp" "src/graphics/sdl/sdl_window.cpp" 
-    "src/graphics/sdl/sdl_texture.hpp" "src/graphics/sdl/sdl_texture.cpp" 
-    "src/graphics/sdl/sdl_surface.hpp" "src/graphics/sdl/sdl_surface.cpp"
-     
-    "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
-    "src/graphics/sdl/layers/sdl_render_layer.hpp"
-    "src/graphics/sdl/layers/sdl_game_layer.hpp" "src/graphics/sdl/layers/sdl_game_layer.cpp"
 
-    "src/graphics/fs_assets_loader.hpp" "src/graphics/fs_assets_loader.cpp"
-    
-    #Game
+     #Game
     "src/game/game_map.hpp" "src/game/game_map.cpp"
     "src/game/tile.hpp"  
     "src/game/units.hpp"
 
     #Application
     "src/application/application.hpp" "src/application/application.cpp"
-    "src/input/input_handler.hpp" 
-    
-    #SDL Application
-    "src/application/sdl/sdl_application.hpp" "src/application/sdl/sdl_application.cpp" 
-    "src/input/sdl/sdl_input_handler.hpp" "src/input/sdl/sdl_input_handler.cpp" 
+    "src/input/input_handler.hpp"
 )
+
+if (DEFINED SDL_PC_BUILD OR DEFINED SDL_BROWSER_BUILD)
+    list(APPEND SRC_FILES
+        #SDL Graphics Layer    
+        "src/application/sdl/sdl_small_guards.hpp"
+        "src/application/sdl/sdl_include.hpp" 
+    
+        "src/graphics/sdl/sdl_renderer.hpp" "src/graphics/sdl/sdl_renderer.cpp"
+        "src/graphics/sdl/sdl_window.hpp" "src/graphics/sdl/sdl_window.cpp" 
+        "src/graphics/sdl/sdl_texture.hpp" "src/graphics/sdl/sdl_texture.cpp" 
+        "src/graphics/sdl/sdl_surface.hpp" "src/graphics/sdl/sdl_surface.cpp"
+     
+        "src/graphics/sdl/sdl_game_renderer.hpp" "src/graphics/sdl/sdl_game_renderer.cpp"
+        "src/graphics/sdl/layers/sdl_render_layer.hpp"
+        "src/graphics/sdl/layers/sdl_game_layer.hpp" "src/graphics/sdl/layers/sdl_game_layer.cpp"
+
+        #SDL Application
+        "src/application/sdl/sdl_pc_application.hpp" "src/application/sdl/sdl_pc_application.cpp" 
+        "src/input/sdl/sdl_input_handler.hpp" "src/input/sdl/sdl_input_handler.cpp" 
+    )
+endif()
+
+if (DEFINED SDL_PC_BUILD)
+    list(APPEND SRC_FILES
+        "src/sdl_pc_main.cpp" 
+        "src/graphics/fs_assets_loader.hpp" "src/graphics/fs_assets_loader.cpp"
+    )
+endif()
+
+add_executable(${PROJECT_NAME} ${SRC_FILES})
 
 #SYSTEM PUBLIC to disable clang warnings
 target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "${SDL_PATH}/include/")
-target_include_directories("${PROJECT_NAME}" SYSTEM PUBLIC "src/")
+target_include_directories("${PROJECT_NAME}" PUBLIC "src/")
 target_link_directories("${PROJECT_NAME}" PUBLIC "${SDL_PATH}/lib/x64/")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2")
 target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2_ttf")
@@ -89,15 +98,17 @@ target_link_libraries("${PROJECT_NAME}" PUBLIC "SDL2_image")
 if (${DEBUG_BUILD})
     add_compile_definitions(DEBUG_MODE_ENABLED)
 endif()
-target_include_directories("${PROJECT_NAME}" PUBLIC "src/include/")
 
 
 #Warnings setup
 add_compile_options(
     -Wall -Wextra -Weverything -Wpedantic #Warnings
     -Wno-c++98-compat #No annoying warnings about c++98 from Wall
-    /EHsc #Enable exceptions
 )
+
+if (MSVC)
+    add_compile_options(/EHsc) #Enable exceptions
+endif()  
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake_dev_utils.cmake")
     include("${CMAKE_CURRENT_SOURCE_DIR}/cmake_dev_utils.cmake")

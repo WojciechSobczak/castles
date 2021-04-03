@@ -8,7 +8,7 @@
 #include "../../graphics/sdl/sdl_renderer.hpp"
 
 
-class SDLApplication : public IApplication {
+class SDLPCApplication : public IApplication {
 private:
     sdlwrap::SDLLifetimeGuard sdlGuard{};
     sdlwrap::SDLTTFLifetimeGuard sdlTtfGuard{};
@@ -19,9 +19,10 @@ private:
     std::shared_ptr<GameMap> gameMap = std::make_unique<GameMap>(50, 100);
     std::vector<std::unique_ptr<IRenderLayer>> layers{};
 public:
-    SDLApplication();
+    SDLPCApplication();
 
     virtual std::shared_ptr<IGameRenderer> createRenderer() override;
     virtual std::shared_ptr<IInputHandler> createInputHandler() override;
+    virtual std::shared_ptr<IAssetsLoader> createAssetsLoader() override;
     virtual std::vector<std::unique_ptr<IRenderLayer>>& getRenderLayers() override;
 };

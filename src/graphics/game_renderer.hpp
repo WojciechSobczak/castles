@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <chrono>
-#include <defines.hpp>
 #include "../game/game_map.hpp"
 #include "render_layer.hpp"
 

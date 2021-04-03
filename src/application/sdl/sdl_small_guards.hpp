@@ -67,27 +67,27 @@ namespace sdlwrap {
 
     class SDLRWops {
     private:
-        SDL_RWops* memoryStream{};
+        SDL_RWops* stream{};
     public:
-        SDLRWops(SDL_RWops* memoryStream) : memoryStream(memoryStream) {}
+        SDLRWops(SDL_RWops* stream) : stream(stream) {}
 
         SDLRWops(SDLRWops&& other) noexcept {
-            this->memoryStream = other.memoryStream;
-            other.memoryStream = nullptr;
+            this->stream = other.stream;
+            other.stream = nullptr;
         }
         SDLRWops& operator=(SDLRWops&& other) noexcept {
-            this->memoryStream = other.memoryStream;
-            other.memoryStream = nullptr;
+            this->stream = other.stream;
+            other.stream = nullptr;
         }
 
         ~SDLRWops() noexcept {
-            if (this->memoryStream != nullptr) {
-                SDL_RWclose(this->memoryStream);
+            if (this->stream != nullptr) {
+                SDL_RWclose(this->stream);
             }
         }
 
         SDL_RWops* get() const noexcept {
-            return this->memoryStream;
+            return this->stream;
         }
     };
 }
